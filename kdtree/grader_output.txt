@@ -1,0 +1,795 @@
+See the Assessment Guide for information on how to interpret this report.
+
+ASSESSMENT SUMMARY
+
+Compilation:  PASSED
+API:          PASSED
+
+Spotbugs:     PASSED
+PMD:          FAILED (6 warnings)
+Checkstyle:   FAILED (0 errors, 16 warnings)
+
+Correctness:  33/35 tests passed
+Memory:       16/16 tests passed
+Timing:       42/42 tests passed
+
+Aggregate score: 96.57%
+[Compilation: 5%, API: 5%, Spotbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
+
+ASSESSMENT DETAILS
+
+The following files were submitted:
+----------------------------------
+ 15K Oct 12 11:35 KdTree.java
+3.3K Oct 12 11:35 PointSET.java
+
+
+********************************************************************************
+*  COMPILING                                                                    
+********************************************************************************
+
+
+% javac PointSET.java
+*-----------------------------------------------------------
+
+% javac KdTree.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+PointSET:
+
+KdTree:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS                                       
+********************************************************************************
+
+
+% spotbugs *.class
+*-----------------------------------------------------------
+L P UPM_UNCALLED_PRIVATE_METHOD UPM: The private method 'leftBottomRect()' is never called.  At KdTree.java:[lines 48-51]
+L P UPM_UNCALLED_PRIVATE_METHOD UPM: The private method 'rightUpRect()' is never called.  At KdTree.java:[lines 56-59]
+M D UP_UNUSED_PARAMETER UP: Static or private method KdTree.range(KdTree$Node, RectHV, RectHV, ArrayList) has unused parameters  At KdTree.java:[lines 321-333]
+M D UP_UNUSED_PARAMETER UP: Static or private method KdTree.nearest(KdTree$Node, KdTree$Node, Point2D, int, KdTree$Champion) has unused parameters  At KdTree.java:[lines 372-461]
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+KdTree.java:18: The private instance (or static) variable 'point' can be made 'final'; it is initialized only in the declaration or constructor. [ImmutableField]
+KdTree.java:21: The private instance (or static) variable 'isVerticalCut' can be made 'final'; it is initialized only in the declaration or constructor. [ImmutableField]
+KdTree.java:320: Avoid unused parameter variables, such as 'partialRect'. [UnusedFormalParameter]
+KdTree.java:371: Avoid unused parameter variables, such as 'parent'. [UnusedFormalParameter]
+KdTree.java:469: The method body is empty. If this is your intent, document it with a comment. [UncommentedEmptyMethodBody]
+PointSET.java:12: The private instance (or static) variable 'set' can be made 'final'; it is initialized only in the declaration or constructor. [ImmutableField]
+PMD ends with 6 warnings.
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+[WARN] KdTree.java:8:3: '//' or '/*' is not followed by whitespace. [WhitespaceAfter]
+[WARN] KdTree.java:9:3: '//' or '/*' is not followed by whitespace. [WhitespaceAfter]
+[WARN] KdTree.java:63:55: The local (or parameter) variable 'point' has the same name as an instance variable. Use a different name. [HiddenField]
+[WARN] KdTree.java:267:9: Avoid nested blocks: the curly braces serve no purpose. [AvoidNestedBlocks]
+[WARN] KdTree.java:446:9: Avoid nested blocks: the curly braces serve no purpose. [AvoidNestedBlocks]
+Checkstyle ends with 0 errors and 5 warnings.
+
+% custom checkstyle checks for PointSET.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for KdTree.java
+*-----------------------------------------------------------
+[WARN] KdTree.java:249:54: The numeric literal '255' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:249:59: The numeric literal '102' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:249:64: The numeric literal '102' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:249:81: The numeric literal '51' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:249:85: The numeric literal '204' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:249:90: The numeric literal '255' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:268:34: The numeric literal '0.002' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:280:61: The numeric literal '9' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:282:45: The numeric literal '0.02' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:284:45: The numeric literal '0.02' appears to be unnecessary. [NumericLiteral]
+[WARN] KdTree.java:288:60: The numeric literal '10' appears to be unnecessary. [NumericLiteral]
+Checkstyle ends with 0 errors and 11 warning.
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of PointSET
+*-----------------------------------------------------------
+Running 8 total tests.
+
+A point in an m-by-m grid means that it is of the form (i/m, j/m),
+where i and j are integers between 0 and m
+
+Test 1: insert n random points; check size() and isEmpty() after each insertion
+        (size may be less than n because of duplicates)
+  * 5 random points in a 1-by-1 grid
+  * 50 random points in a 8-by-8 grid
+  * 100 random points in a 16-by-16 grid
+  * 1000 random points in a 128-by-128 grid
+  * 5000 random points in a 1024-by-1024 grid
+  * 50000 random points in a 65536-by-65536 grid
+==> passed
+
+Test 2: insert n random points; check contains() with random query points
+  * 1 random points in a 1-by-1 grid
+  * 10 random points in a 4-by-4 grid
+  * 20 random points in a 8-by-8 grid
+  * 10000 random points in a 128-by-128 grid
+  * 100000 random points in a 1024-by-1024 grid
+  * 100000 random points in a 65536-by-65536 grid
+==> passed
+
+Test 3: insert random points; check nearest() with random query points
+  * 10 random points in a 4-by-4 grid
+  * 15 random points in a 8-by-8 grid
+  * 20 random points in a 16-by-16 grid
+  * 100 random points in a 32-by-32 grid
+  * 10000 random points in a 65536-by-65536 grid
+==> passed
+
+Test 4: insert random points; check range() with random query rectangles
+  * 2 random points and random rectangles in a 2-by-2 grid
+  * 10 random points and random rectangles in a 4-by-4 grid
+  * 20 random points and random rectangles in a 8-by-8 grid
+  * 100 random points and random rectangles in a 16-by-16 grid
+  * 1000 random points and random rectangles in a 64-by-64 grid
+  * 10000 random points and random rectangles in a 128-by-128 grid
+==> passed
+
+Test 5: call methods before inserting any points
+ * size() and isEmpty()
+ * contains()
+ * nearest()
+ * range()
+==> passed
+
+Test 6: call methods with null argument
+  * insert()
+  * contains()
+  * range()
+  * nearest()
+==> passed
+
+Test 7: check intermixed sequence of calls to insert(), isEmpty(),
+        size(), contains(), range(), and nearest() with
+        probabilities (p1, p2, p3, p4, p5, p6, p7), respectively
+  * 10000 calls with random points in a 1-by-1 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+  * 10000 calls with random points in a 16-by-16 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+  * 10000 calls with random points in a 128-by-128 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+  * 10000 calls with random points in a 1024-by-1024 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+  * 10000 calls with random points in a 8192-by-8192 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+  * 10000 calls with random points in a 65536-by-65536 grid
+    and probabilities (0.3, 0.1, 0.1, 0.1, 0.2, 0.2)
+==> passed
+
+Test 8: check that two PointSET objects can be created at the same time
+==> passed
+
+
+Total: 8/8 tests passed!
+
+
+================================================================
+Testing correctness of KdTree
+*-----------------------------------------------------------
+Running 27 total tests.
+
+In the tests below, we consider three classes of points and rectangles.
+
+  * Non-degenerate points: no two points (or rectangles) share either an
+                           x-coordinate or a y-coordinate
+
+  * Distinct points:       no two points (or rectangles) share both an
+                           x-coordinate and a y-coordinate
+
+  * General points:        no restrictions on the x-coordinates or y-coordinates
+                           of the points (or rectangles)
+
+A point in an m-by-m grid means that it is of the form (i/m, j/m),
+where i and j are integers between 0 and m (inclusive).
+
+Test 1a: insert points from file; check size() and isEmpty() after each insertion
+  * input0.txt
+  * input1.txt
+  * input5.txt
+  * input10.txt
+==> passed
+
+Test 1b: insert non-degenerate points; check size() and isEmpty() after each insertion
+  * 1 random non-degenerate points in a 1-by-1 grid
+  * 5 random non-degenerate points in a 8-by-8 grid
+  * 10 random non-degenerate points in a 16-by-16 grid
+  * 50 random non-degenerate points in a 128-by-128 grid
+  * 500 random non-degenerate points in a 1024-by-1024 grid
+  * 50000 random non-degenerate points in a 65536-by-65536 grid
+==> passed
+
+Test 1c: insert distinct points; check size() and isEmpty() after each insertion
+  * 1 random distinct points in a 1-by-1 grid
+  * 10 random distinct points in a 8-by-8 grid
+  * 20 random distinct points in a 16-by-16 grid
+  * 10000 random distinct points in a 128-by-128 grid
+  * 100000 random distinct points in a 1024-by-1024 grid
+  * 100000 random distinct points in a 65536-by-65536 grid
+==> passed
+
+Test 1d: insert general points; check size() and isEmpty() after each insertion
+  * 5 random general points in a 1-by-1 grid
+  * 10 random general points in a 4-by-4 grid
+  * 50 random general points in a 8-by-8 grid
+  * 100000 random general points in a 16-by-16 grid
+  * 100000 random general points in a 128-by-128 grid
+  * 100000 random general points in a 1024-by-1024 grid
+==> passed
+
+Test 2a: insert points from file; check contains() with random query points
+  * input0.txt
+  * input1.txt
+  * input5.txt
+  * input10.txt
+==> passed
+
+Test 2b: insert non-degenerate points; check contains() with random query points
+  * 1 random non-degenerate points in a 1-by-1 grid
+  * 5 random non-degenerate points in a 8-by-8 grid
+  * 10 random non-degenerate points in a 16-by-16 grid
+  * 20 random non-degenerate points in a 32-by-32 grid
+  * 500 random non-degenerate points in a 1024-by-1024 grid
+  * 10000 random non-degenerate points in a 65536-by-65536 grid
+==> passed
+
+Test 2c: insert distinct points; check contains() with random query points
+  * 1 random distinct points in a 1-by-1 grid
+  * 10 random distinct points in a 4-by-4 grid
+  * 20 random distinct points in a 8-by-8 grid
+  * 10000 random distinct points in a 128-by-128 grid
+  * 100000 random distinct points in a 1024-by-1024 grid
+  * 100000 random distinct points in a 65536-by-65536 grid
+==> passed
+
+Test 2d: insert general points; check contains() with random query points
+  * 10000 random general points in a 1-by-1 grid
+  * 10000 random general points in a 16-by-16 grid
+  * 10000 random general points in a 128-by-128 grid
+  * 10000 random general points in a 1024-by-1024 grid
+==> passed
+
+Test 3a: insert points from file; check range() with random query rectangles
+  * input0.txt
+  * input1.txt
+  * input5.txt
+  * input10.txt
+==> passed
+
+Test 3b: insert non-degenerate points; check range() with random query rectangles
+  * 1 random non-degenerate points and random rectangles in a 2-by-2 grid
+  * 5 random non-degenerate points and random rectangles in a 8-by-8 grid
+  * 10 random non-degenerate points and random rectangles in a 16-by-16 grid
+  * 20 random non-degenerate points and random rectangles in a 32-by-32 grid
+  * 500 random non-degenerate points and random rectangles in a 1024-by-1024 grid
+  * 10000 random non-degenerate points and random rectangles in a 65536-by-65536 grid
+==> passed
+
+Test 3c: insert distinct points; check range() with random query rectangles
+  * 2 random distinct points and random rectangles in a 2-by-2 grid
+  * 10 random distinct points and random rectangles in a 4-by-4 grid
+  * 20 random distinct points and random rectangles in a 8-by-8 grid
+  * 100 random distinct points and random rectangles in a 16-by-16 grid
+  * 1000 random distinct points and random rectangles in a 64-by-64 grid
+  * 10000 random distinct points and random rectangles in a 128-by-128 grid
+==> passed
+
+Test 3d: insert general points; check range() with random query rectangles
+  * 5000 random general points and random rectangles in a 2-by-2 grid
+  * 5000 random general points and random rectangles in a 16-by-16 grid
+  * 5000 random general points and random rectangles in a 128-by-128 grid
+  * 5000 random general points and random rectangles in a 1024-by-1024 grid
+==> passed
+
+Test 3e: insert random points; check range() with tiny rectangles
+         enclosing each point
+  * 5 tiny rectangles and 5 general points in a 2-by-2 grid
+  * 10 tiny rectangles and 10 general points in a 4-by-4 grid
+  * 20 tiny rectangles and 20 general points in a 8-by-8 grid
+  * 5000 tiny rectangles and 5000 general points in a 128-by-128 grid
+  * 5000 tiny rectangles and 5000 general points in a 1024-by-1024 grid
+  * 5000 tiny rectangles and 5000 general points in a 65536-by-65536 grid
+==> passed
+
+Test 4a: insert points from file; check range() with random query rectangles
+         and check traversal of kd-tree
+  * input5.txt
+  * input10.txt
+==> passed
+
+Test 4b: insert non-degenerate points; check range() with random query rectangles
+         and check traversal of kd-tree
+  * 3 random non-degenerate points and 1000 random rectangles in a 4-by-4 grid
+  * 6 random non-degenerate points and 1000 random rectangles in a 8-by-8 grid
+  * 10 random non-degenerate points and 1000 random rectangles in a 16-by-16 grid
+  * 20 random non-degenerate points and 1000 random rectangles in a 32-by-32 grid
+  * 30 random non-degenerate points and 1000 random rectangles in a 64-by-64 grid
+==> passed
+
+Test 5a: insert points from file; check nearest() with random query points
+  * input0.txt
+  * input1.txt
+  * input5.txt
+  * input10.txt
+==> passed
+
+Test 5b: insert non-degenerate points; check nearest() with random query points
+  * 5 random non-degenerate points in a 8-by-8 grid
+  * 10 random non-degenerate points in a 16-by-16 grid
+  * 20 random non-degenerate points in a 32-by-32 grid
+  * 30 random non-degenerate points in a 64-by-64 grid
+  * 10000 random non-degenerate points in a 65536-by-65536 grid
+==> passed
+
+Test 5c: insert distinct points; check nearest() with random query points
+  * 10 random distinct points in a 4-by-4 grid
+  * 15 random distinct points in a 8-by-8 grid
+  * 20 random distinct points in a 16-by-16 grid
+  * 100 random distinct points in a 32-by-32 grid
+  * 10000 random distinct points in a 65536-by-65536 grid
+==> passed
+
+Test 5d: insert general points; check nearest() with random query points
+  * 10000 random general points in a 16-by-16 grid
+  * 10000 random general points in a 128-by-128 grid
+  * 10000 random general points in a 1024-by-1024 grid
+==> passed
+
+Test 6a: insert points from file; check nearest() with random query points
+         and check traversal of kd-tree
+  * input5.txt
+    - student   nearest() = (0.7, 0.2)
+    - reference nearest() = (0.7, 0.2)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - query point = (0.42, 0.0)
+    - sequence of points inserted: 
+      A  0.7 0.2
+      B  0.5 0.4
+      C  0.2 0.3
+      D  0.4 0.7
+      E  0.9 0.6
+    - student sequence of kd-tree nodes involved in calls to Point2D methods:
+      A B C (0.2, 0.0) (0.42, 0.4) (0.7, 0.0) E (0.42, 0.6) 
+    - reference sequence of kd-tree nodes involved in calls to Point2D methods:
+      A B C E 
+    - failed on trial 1 of 1000
+
+  * input10.txt
+    - student   nearest() = (0.499, 0.208)
+    - reference nearest() = (0.499, 0.208)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - query point = (0.34, 0.19)
+    - sequence of points inserted: 
+      A  0.372 0.497
+      B  0.564 0.413
+      C  0.226 0.577
+      D  0.144 0.179
+      E  0.083 0.51
+      F  0.32 0.708
+      G  0.417 0.362
+      H  0.862 0.825
+      I  0.785 0.725
+      J  0.499 0.208
+    - student sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C D (0.144, 0.19) E (0.34, 0.51) (0.34, 0.577) (0.372, 0.19) B G (0.417, 0.19) J (0.34, 0.208) (0.34, 0.413) 
+    - reference sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C D E B G J 
+    - failed on trial 1 of 1000
+
+==> FAILED
+
+Test 6b: insert non-degenerate points; check nearest() with random query points
+         and check traversal of kd-tree
+  * 5 random non-degenerate points in a 8-by-8 grid
+    - student   nearest() = (0.875, 0.75)
+    - reference nearest() = (0.875, 0.75)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - query point = (0.625, 1.0)
+    - sequence of points inserted: 
+      A  0.75 0.375
+      B  1.0 0.0
+      C  0.125 0.5
+      D  0.25 0.125
+      E  0.875 0.75
+    - student sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C (0.625, 0.5) D (0.25, 1.0) (0.75, 1.0) B E (0.875, 1.0) (0.625, 0.0) 
+    - reference sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C D B E 
+    - failed on trial 1 of 1000
+
+  * 10 random non-degenerate points in a 16-by-16 grid
+    - student   nearest() = (0.6875, 0.0625)
+    - reference nearest() = (0.6875, 0.0625)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - query point = (1.0, 0.0)
+    - sequence of points inserted: 
+      A  0.0 0.625
+      B  0.75 0.25
+      C  0.6875 0.0625
+      D  0.4375 0.8125
+      E  0.5 0.3125
+      F  0.875 0.4375
+      G  0.25 0.375
+      H  0.1875 0.875
+      I  0.9375 0.5
+      J  0.625 0.5625
+    - student sequence of kd-tree nodes involved in calls to Point2D methods:
+      A B C (0.6875, 0.0) (1.0, 0.25) D E (1.0, 0.3125) F I (1.0, 0.5) (0.875, 0.0) J (1.0, 0.5625) (0.4375, 0.0) (0.0, 0.0) 
+    - reference sequence of kd-tree nodes involved in calls to Point2D methods:
+      A B C D E F I 
+    - failed on trial 1 of 1000
+
+  * 20 random non-degenerate points in a 32-by-32 grid
+    - student   nearest() = (0.0625, 0.21875)
+    - reference nearest() = (0.0625, 0.21875)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - query point = (0.03125, 0.34375)
+    - sequence of points inserted: 
+      A  0.25 0.9375
+      B  0.46875 0.46875
+      C  0.0 0.84375
+      D  0.84375 0.375
+      E  1.0 0.6875
+      F  0.3125 0.125
+      G  0.78125 0.875
+      H  0.09375 0.78125
+      I  0.4375 0.90625
+      J  0.96875 0.65625
+      K  0.71875 0.4375
+      L  0.0625 0.21875
+      M  0.90625 0.59375
+      N  0.40625 0.625
+      O  0.1875 0.5625
+      P  0.125 0.15625
+      Q  0.875 0.3125
+      R  0.21875 0.40625
+      S  0.65625 0.53125
+      T  0.6875 0.75
+    - student sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C H L (0.03125, 0.21875) (0.09375, 0.34375) O P (0.125, 0.34375) R (0.03125, 0.40625) (0.03125, 0.5625) (0.03125, 0.84375) (0.25, 0.34375) 
+    - reference sequence of kd-tree nodes involved in calls to Point2D methods:
+      A C H L O P R 
+    - failed on trial 1 of 1000
+
+  * 30 random non-degenerate points in a 64-by-64 grid
+    - student   nearest() = (0.203125, 0.203125)
+    - reference nearest() = (0.203125, 0.203125)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - number of student   entries = 16
+    - number of reference entries = 8
+    - failed on trial 1 of 1000
+
+  * 50 random non-degenerate points in a 128-by-128 grid
+    - student   nearest() = (0.1484375, 0.390625)
+    - reference nearest() = (0.1484375, 0.390625)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - number of student   entries = 14
+    - number of reference entries = 7
+    - failed on trial 1 of 1000
+
+  * 1000 random non-degenerate points in a 2048-by-2048 grid
+    - student   nearest() = (0.0546875, 0.8212890625)
+    - reference nearest() = (0.0546875, 0.8212890625)
+    - performs incorrect traversal of kd-tree during call to nearest()
+    - number of student   entries = 40
+    - number of reference entries = 20
+    - entry 10 of the two sequences are not equal
+    - student   entry 10 = (0.05078125, 0.7509765625)
+    - reference entry 10 = (0.0830078125, 0.8173828125)
+
+    - failed on trial 1 of 1000
+
+==> FAILED
+
+Test 7: check with no points
+  * size() and isEmpty()
+  * contains()
+  * nearest()
+  * range()
+==> passed
+
+Test 8: check that the specified exception is thrown with null arguments
+  * argument to insert() is null
+  * argument to contains() is null
+  * argument to range() is null
+  * argument to nearest() is null
+==> passed
+
+Test 9a: check intermixed sequence of calls to insert(), isEmpty(),
+         size(), contains(), range(), and nearest() with probabilities
+         (p1, p2, p3, p4, p5, p6), respectively
+  * 20000 calls with non-degenerate points in a 1-by-1 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with non-degenerate points in a 16-by-16 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with non-degenerate points in a 128-by-128 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with non-degenerate points in a 1024-by-1024 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with non-degenerate points in a 8192-by-8192 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with non-degenerate points in a 65536-by-65536 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+==> passed
+
+Test 9b: check intermixed sequence of calls to insert(), isEmpty(),
+         size(), contains(), range(), and nearest() with probabilities
+         (p1, p2, p3, p4, p5, p6), respectively
+  * 20000 calls with distinct points in a 1-by-1 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with distinct points in a 16-by-16 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with distinct points in a 128-by-128 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with distinct points in a 1024-by-1024 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with distinct points in a 8192-by-8192 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with distinct points in a 65536-by-65536 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+==> passed
+
+Test 9c: check intermixed sequence of calls to insert(), isEmpty(),
+         size(), contains(), range(), and nearest() with probabilities
+         (p1, p2, p3, p4, p5, p6), respectively
+  * 20000 calls with general points in a 1-by-1 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with general points in a 16-by-16 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with general points in a 128-by-128 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with general points in a 1024-by-1024 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with general points in a 8192-by-8192 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+  * 20000 calls with general points in a 65536-by-65536 grid
+    and probabilities (0.3, 0.05, 0.05, 0.2, 0.2, 0.2)
+==> passed
+
+Test 10: insert n random points into two different KdTree objects;
+        check that repeated calls to size(), contains(), range(),
+        and nearest() with the same arguments yield same results
+  * 10 random general points in a 4-by-4 grid
+  * 20 random general points in a 8-by-8 grid
+  * 100 random general points in a 128-by-128 grid
+  * 1000 random general points in a 65536-by-65536 grid
+==> passed
+
+
+Total: 25/27 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Point2D
+*-----------------------------------------------------------
+Memory of Point2D object = 32 bytes
+
+================================================================
+
+
+
+Analyzing memory of RectHV
+*-----------------------------------------------------------
+Memory of RectHV object = 48 bytes
+
+================================================================
+
+
+
+Analyzing memory of PointSET
+*-----------------------------------------------------------
+Running 8 total tests.
+
+Memory usage of a PointSET with n points (including Point2D and RectHV objects).
+Maximum allowed memory is 96n + 200 bytes.
+
+                 n       student (bytes)    reference (bytes)
+--------------------------------------------------------------
+=> passed        1          264                264
+=> passed        2          360                360
+=> passed        5          648                648
+=> passed       10         1128               1128
+=> passed       25         2568               2568
+=> passed      100         9768               9768
+=> passed      400        38568              38568
+=> passed      800        76968              76968
+==> 8/8 tests passed
+
+Total: 8/8 tests passed!
+
+Estimated student   memory (bytes) = 96.00 n + 168.00  (R^2 = 1.000)
+Estimated reference memory (bytes) = 96.00 n + 168.00  (R^2 = 1.000)
+
+================================================================
+
+
+
+Analyzing memory of KdTree
+*-----------------------------------------------------------
+Running 8 total tests.
+
+Memory usage of a KdTree with n points (including Point2D and RectHV objects).
+Maximum allowed memory is 312n + 192 bytes.
+
+                 n       student (bytes)    reference (bytes)
+--------------------------------------------------------------
+=> passed        1          160                160
+=> passed        2          296                288
+=> passed        5          704                672
+=> passed       10         1384               1312
+=> passed       25         3424               3232
+=> passed      100        13624              12832
+=> passed      400        54424              51232
+=> passed      800       108824             102432
+==> 8/8 tests passed
+
+Total: 8/8 tests passed!
+
+Estimated student   memory (bytes) = 136.00 n + 24.00  (R^2 = 1.000)
+Estimated reference memory (bytes) = 128.00 n + 32.00  (R^2 = 1.000)
+
+================================================================
+
+
+
+********************************************************************************
+*  TIMING
+********************************************************************************
+
+Timing PointSET
+*-----------------------------------------------------------
+Running 14 total tests.
+
+
+Inserting n points into a PointSET
+
+               n      ops per second
+----------------------------------------
+=> passed   160000    1649021         
+=> passed   320000    2063910         
+=> passed   640000    2057995         
+=> passed  1280000    1606940         
+==> 4/4 tests passed
+
+Performing contains() queries after inserting n points into a PointSET
+
+               n      ops per second
+----------------------------------------
+=> passed   160000    1040187         
+=> passed   320000    1040227         
+=> passed   640000     879955         
+=> passed  1280000     691337         
+==> 4/4 tests passed
+
+Performing range() queries after inserting n points into a PointSET
+
+               n      ops per second
+----------------------------------------
+=> passed    10000       4969         
+=> passed    20000       2224         
+=> passed    40000        745         
+==> 3/3 tests passed
+
+Performing nearest() queries after inserting n points into a PointSET
+
+               n      ops per second
+----------------------------------------
+=> passed    10000       5796         
+=> passed    20000       1986         
+=> passed    40000        812         
+==> 3/3 tests passed
+
+Total: 14/14 tests passed!
+
+
+================================================================
+
+
+
+Timing KdTree
+*-----------------------------------------------------------
+Running 28 total tests.
+
+
+Test 1a-d: Insert n points into a 2d tree. The table gives the average number of calls
+           to methods in RectHV and Point per call to insert().
+
+                                                                                                Point2D
+               n      ops per second       RectHV()           x()               y()             equals()
+----------------------------------------------------------------------------------------------------------------
+=> passed   160000    1144939               1.0              23.6              22.6               0.0         
+=> passed   320000    1309199               1.0              24.0              23.0               0.0         
+=> passed   640000    1088187               1.0              25.5              24.5               0.0         
+=> passed  1280000     893172               1.0              27.6              26.6               0.0         
+==> 4/4 tests passed
+
+
+Test 2a-h: Perform contains() queries after inserting n points into a 2d tree. The table gives
+           the average number of calls to methods in RectHV and Point per call to contains().
+
+                                                                               Point2D
+               n      ops per second       x()               y()               equals()
+-----------------------------------------------------------------------------------------------
+=> passed    10000    1129807              18.5              17.5               0.0         
+=> passed    20000    1142848              19.7              18.7               0.0         
+=> passed    40000    1063581              21.8              20.8               0.0         
+=> passed    80000     972423              22.0              21.0               0.0         
+=> passed   160000     860158              23.2              22.2               0.0         
+=> passed   320000     768334              25.0              24.0               0.0         
+=> passed   640000     608944              25.7              24.7               0.0         
+=> passed  1280000     608760              27.2              26.2               0.0         
+==> 8/8 tests passed
+
+
+Test 3a-h: Perform range() queries after inserting n points into a 2d tree. The table gives
+           the average number of calls to methods in RectHV and Point per call to range().
+
+               n      ops per second       intersects()      contains()        x()               y()
+---------------------------------------------------------------------------------------------------------------
+=> passed    10000     365197              50.4              31.1              84.2              44.7         
+=> passed    20000     281005              52.7              32.6              88.1              51.0         
+=> passed    40000     341654              64.9              39.3             105.4              54.9         
+=> passed    80000     253604              67.1              40.7             108.8              57.2         
+=> passed   160000     240104              70.0              42.5             115.3              65.4         
+=> passed   320000     257177              67.0              40.2             108.0              57.9         
+=> passed   640000     220832              72.0              43.3             116.1              64.8         
+=> passed  1280000     177793              78.7              47.0             125.2              62.4         
+==> 8/8 tests passed
+
+
+Test 4a-h: Perform nearest() queries after inserting n points into a 2d tree. The table gives
+           the average number of calls to methods in RectHV and Point per call to nearest().
+
+                                         Point2D                 RectHV
+               n      ops per second     distanceSquaredTo()     distanceSquaredTo()        x()               y()
+------------------------------------------------------------------------------------------------------------------------
+=> passed    10000   630113                  50.2                    0.0                    50.4              50.0         
+=> passed    20000   560780                  55.0                    0.0                    55.3              54.8         
+=> passed    40000   504606                  64.5                    0.0                    64.7              64.3         
+=> passed    80000   445716                  65.7                    0.0                    66.4              65.1         
+=> passed   160000   376457                  71.2                    0.0                    71.4              71.0         
+=> passed   320000   371692                  74.0                    0.0                    74.7              73.4         
+=> passed   640000   232162                  76.9                    0.0                    77.5              76.3         
+=> passed  1280000   295697                  85.8                    0.0                    85.6              86.0         
+==> 8/8 tests passed
+
+
+
+Total: 28/28 tests passed!
+
+
+================================================================
